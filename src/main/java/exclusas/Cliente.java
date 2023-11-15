@@ -33,24 +33,24 @@ public class Cliente {
 
     public void start() {
         try {
-            // while (true) {
-            Socket socket = new Socket(SERVER_HOST, SERVER_PORT);
+            while (true) {
+                Socket socket = new Socket(SERVER_HOST, SERVER_PORT);
 
-            System.out.println("Barco-" + id + " llegó a la exclusa desde el " + tipo);
-            sendString(socket, tipo);
+                System.out.println("Barco-" + id + " llegó a la exclusa desde el " + tipo);
+                sendString(socket, tipo);
 
-            System.out.println("Barco-" + id + " esperando confirmación para cruzar desde el " + tipo);
+                System.out.println("Barco-" + id + " esperando confirmación para cruzar desde el " + tipo);
 
-            String signal = receiveString(socket);
-            if (signal.equals("GRANTED")) {
-                System.out.println("Barco-" + id + " cruzando desde el " + tipo);
+                String signal = receiveString(socket);
+                if (signal.equals("GRANTED")) {
+                    System.out.println("Barco-" + id + " cruzando desde el " + tipo);
 
-                Thread.sleep(new Random().nextInt(4) + 2);
+                    Thread.sleep(new Random().nextInt(4) + 2);
 
-                System.out.println("Barco-" + id + " terminó de cruzar.");
-                sendString(socket, "RELEASE");
+                    System.out.println("Barco-" + id + " terminó de cruzar.");
+                    sendString(socket, "RELEASE");
+                }
             }
-            // }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
