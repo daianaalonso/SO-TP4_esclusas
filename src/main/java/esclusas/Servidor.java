@@ -98,10 +98,6 @@ public class Servidor {
             InputStream inputStream = connection.getInputStream();
             byte[] buffer = new byte[REQUEST];
             int bytesRead = inputStream.read(buffer);
-
-            if (bytesRead == -1) {
-                return null;
-            }
             return new String(buffer, 0, bytesRead);
         } catch (IOException e) {
             throw new RuntimeException(e);
