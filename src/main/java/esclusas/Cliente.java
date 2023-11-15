@@ -1,4 +1,4 @@
-package exclusas;
+package esclusas;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +36,7 @@ public class Cliente {
             while (true) {
                 Socket socket = new Socket(SERVER_HOST, SERVER_PORT);
 
-                System.out.println("Barco-" + id + " llegó a la exclusa desde el " + tipo);
+                System.out.println("Barco-" + id + " llegó a la esclusa desde el " + tipo);
                 sendString(socket, tipo);
 
                 System.out.println("Barco-" + id + " esperando confirmación para cruzar desde el " + tipo);

@@ -1,4 +1,4 @@
-package exclusas;
+package esclusas;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +26,7 @@ public class Servidor {
 
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
-            System.out.println("Exclusa lista para la llegada de barcos");
+            System.out.println("Esclusa lista para la llegada de barcos");
 
             while (true) {
                 try {
@@ -85,7 +85,7 @@ public class Servidor {
             String rta2 = receiveString(barco2);
 
             if (rta1.equals("RELEASE") && rta2.equals("RELEASE")) {
-                System.out.println("Exclusa libre...");
+                System.out.println("Esclusa libre...");
                 semaphore.release();
             }
         } catch (InterruptedException e) {
