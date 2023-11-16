@@ -1,4 +1,4 @@
-package esclusas;
+package esclusa.uno;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +22,7 @@ public class Cliente {
 
     public static void main(String[] args) {
         String[] tipos = {"Oeste", "Este"};
-        int numClientes = 4;
+        int numClientes = 5;
 
         for (int i = 0; i < numClientes; i++) {
             String tipo = tipos[i % tipos.length];
