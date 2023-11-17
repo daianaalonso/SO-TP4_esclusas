@@ -7,13 +7,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Semaphore;
 
 public class Servidor {
 
     private static final int PUERTO = 1209;
     private static final int REQUEST = 10;
-    private final Semaphore semaphore = new Semaphore(1);
     private final Queue<Socket> queueO = new ConcurrentLinkedQueue<>();
     private final Queue<Socket> queueE = new ConcurrentLinkedQueue<>();
 
