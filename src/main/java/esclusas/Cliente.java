@@ -1,16 +1,12 @@
-package esclusa.dos;
+package esclusas;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class Cliente {
 
     private static final String SERVER_HOST = "localhost";
-    private static final int SERVER_PORT = 1208;
-    private static final int REQUEST = 10;
-
+    private static final int SERVER_PORT = 1210;
     private String tipo;
     private int id;
 
@@ -46,27 +42,29 @@ public class Cliente {
 
                     System.out.println("Barco-" + id + " entró al canal");
                     sendString(socket, "ADENTRO");
-                }
 
-                String rta = receiveString(socket);
 
-                if (rta.equals("SALIR")) {
-                    Thread.sleep(2000); //tiempo saliendo del canal
+                    String rta = receiveString(socket);
 
-                    System.out.println("Barco-" + id + " salió del canal");
+                    if (rta.equals("SALIR")) {
+                        Thread.sleep(2000); //tiempo saliendo del canal
 
-                    sendString(socket, "AFUERA");
+                        System.out.println("Barco-" + id + " salió del canal");
+
+                        sendString(socket, "AFUERA");
+                    }
                 }
             }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     private void sendString(Socket socket, String message) {
         try {
             OutputStream outputStream = socket.getOutputStream();
-            outputStream.write(message.getBytes());
+            PrintWriter writer = new PrintWriter(outputStream, true);
+            writer.println(message);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -74,10 +72,9 @@ public class Cliente {
 
     private String receiveString(Socket socket) {
         try {
-            InputStream inputStream = socket.getInputStream();
-            byte[] buffer = new byte[REQUEST];
-            int bytesRead = inputStream.read(buffer);
-            return new String(buffer, 0, bytesRead);
+            InputStream input = socket.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            return reader.readLine();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

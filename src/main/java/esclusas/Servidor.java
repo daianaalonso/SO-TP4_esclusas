@@ -1,8 +1,6 @@
-package esclusa.tres;
+package esclusas;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Queue;
@@ -11,7 +9,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Servidor {
 
     private static final int PUERTO = 1210;
-    private static final int REQUEST = 10;
     private final Queue<Socket> queueOeste = new ConcurrentLinkedQueue<>();
     private final Queue<Socket> queueEste = new ConcurrentLinkedQueue<>();
 
@@ -23,7 +20,6 @@ public class Servidor {
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
             System.out.println("Esclusas listas para la llegada de barcos");
-
             while (true) {
                 Socket connection = serverSocket.accept();
                 coordinarBarcos(connection);
@@ -33,14 +29,14 @@ public class Servidor {
         }
     }
 
-    private void coordinarBarcos(Socket connection) {
-        String req = receiveString(connection);
+    private void coordinarBarcos(Socket socket) {
+        String req = receiveString(socket);
         System.out.println("Nuevo barco llegó desde el " + req);
 
         if ("Oeste".equals(req)) {
-            queueOeste.offer(connection);
+            queueOeste.offer(socket);
         } else if ("Este".equals(req)) {
-            queueEste.offer(connection);
+            queueEste.offer(socket);
         }
 
         if (queueOeste.size() >= 2) {
@@ -79,21 +75,21 @@ public class Servidor {
             System.out.println("Barcos afuera. Sube esclusa " + salida);
     }
 
-    private String receiveString(Socket connection) {
+    private void sendString(Socket socket, String message) {
         try {
-            InputStream inputStream = connection.getInputStream();
-            byte[] buffer = new byte[REQUEST];
-            int bytesRead = inputStream.read(buffer);
-            return new String(buffer, 0, bytesRead);
+            OutputStream outputStream = socket.getOutputStream();
+            PrintWriter writer = new PrintWriter(outputStream, true);
+            writer.println(message);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void sendString(Socket connection, String message) {
+    private String receiveString(Socket socket) {
         try {
-            OutputStream outputStream = connection.getOutputStream();
-            outputStream.write(message.getBytes());
+            InputStream input = socket.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            return reader.readLine();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
