@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.Socket;
 
 public class Cliente {
-
     private static final String SERVER_HOST = "localhost";
     private static final int SERVER_PORT = 1210;
     private String tipo;
